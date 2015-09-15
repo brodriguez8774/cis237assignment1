@@ -10,6 +10,15 @@ namespace assignment1
     {
         #region Variables
 
+        // Classes
+        WineItem wineItem;
+
+        // Input Variables
+        private int lengthOfArrayInt;
+        private int indexInt;
+
+        private WineItem[] wineItemArray;
+
         #endregion
 
 
@@ -19,6 +28,12 @@ namespace assignment1
         public WineItemCollection()
         {
 
+        }
+
+        public WineItemCollection(int wineListSize)
+        {
+            lengthOfArrayInt = wineListSize;
+            wineItemArray = new WineItem[lengthOfArrayInt+(lengthOfArrayInt/2)];
         }
 
         #endregion
@@ -32,6 +47,24 @@ namespace assignment1
 
 
         #region Methods
+
+        public void AddWineItem(WineItem wineItem)
+        {
+            if (lengthOfArrayInt > wineItemArray.Length)
+            {
+                wineItemArray[lengthOfArrayInt] = wineItem;
+                lengthOfArrayInt++;
+            }
+            else
+            {
+
+            }
+        }
+
+        public void LoadWineItem(WineItem wineItem, int indexInt)
+        {
+            wineItemArray[indexInt] = wineItem;
+        }
 
         #endregion
     }

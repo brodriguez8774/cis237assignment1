@@ -11,6 +11,9 @@ namespace assignment1
     {
         #region Variables
 
+        // Classes
+        private WineItemCollection wineItemCollection;
+
         // Input Variables
         private int wineIDInt;
         private string wineDescriptionString;
@@ -19,6 +22,7 @@ namespace assignment1
         // Working Variables
         private bool hasLoadedBool = false;
         private int wineListSizeInt;
+        private int indexInt;
 
         private StreamReader inputFile;
 
@@ -28,9 +32,21 @@ namespace assignment1
 
         #region Constructors
 
+        /// <summary>
+        /// Base Constructor.
+        /// </summary>
         public CSVProcessor()
         {
+            GetListSize();
+        }
 
+        /// <summary>
+        /// Constructor to read from file.
+        /// </summary>
+        /// <param name="wineItemCollection">The current instance of WineItemCollection Class.</param>
+        public CSVProcessor(WineItemCollection wineItemCollection)
+        {
+            Collection = wineItemCollection;
         }
 
         #endregion
@@ -38,6 +54,22 @@ namespace assignment1
 
 
         #region Properties
+
+        public WineItemCollection Collection
+        {
+            set
+            {
+                this.wineItemCollection = value;
+            }
+        }
+
+        public int WineListSize
+        {
+            get
+            {
+                return wineListSizeInt;
+            }
+        }
 
         public int WineID
         {
@@ -69,16 +101,39 @@ namespace assignment1
 
         #region Methods
 
-        private void ReadFile()
+        /// <summary>
+        /// Deterimines size of items to handle.
+        /// </summary>
+        private void GetListSize()
+        {
+            while (inputFile.EndOfStream == false)
+            {
+                wineListSizeInt++;
+            }
+        }
+
+        /// <summary>
+        /// Reads from file to create WineItemCollection.
+        /// </summary>
+        public void ReadFile()
         {
             try
             {
+                indexInt = 0;
 
-                while (inputFile.EndOfStream == false)
+                while (indexInt > wineListSizeInt)
                 {
+                    string inputString = inputFile.ReadLine();
+                    var flds = inputString.Split(',');
 
+                    WineItem wineItem = new WineItem();
+                    wineItem.WineID = Convert.ToInt32(flds[0].Trim());
+                    wineItem.WineDescription = flds[1].Trim();
+                    wineItem.WineSize = flds[2].Trim();
 
-                    wineListSizeInt++;
+                    wineItemCollection.LoadWineItem(wineItem, indexInt);
+
+                    indexInt++;
                 }
             }
             catch (Exception errmsg)

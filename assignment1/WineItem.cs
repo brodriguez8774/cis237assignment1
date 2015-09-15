@@ -10,6 +10,7 @@ namespace assignment1
     {
         #region Variables
 
+        // Input Variables
         private int wineIDInt;
         private string wineDescriptionString;
         private string wineSizeString;

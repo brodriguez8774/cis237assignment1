@@ -10,6 +10,15 @@ namespace assignment1
     {
         static void Main(string[] args)
         {
+            CSVProcessor processFiles = new CSVProcessor();
+
+            int wineListSizeInt = processFiles.WineListSize;
+
+
+
+            UserInterface mainMenu = new UserInterface();
+            WineItemCollection wineItemCollection = new WineItemCollection(wineListSizeInt);
+            
         }
     }
 }

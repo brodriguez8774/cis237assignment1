@@ -35,6 +35,21 @@ namespace assignment1
 
         #region Methods
 
+        /// <summary>
+        /// Main loop to keep user in program until exit.
+        /// </summary>
+        private void RunMenu()
+        {
+            while (runProgramBool)
+            {
+                DisplayMainMenu();
+                UserSelection();
+            }
+        }
+
+        /// <summary>
+        /// Reusable menu to display to user.
+        /// </summary>
         private void DisplayMainMenu()
         {
             Console.WriteLine("Choose an Option:" + Environment.NewLine +
@@ -45,11 +60,29 @@ namespace assignment1
                 "5) Exit" + Environment.NewLine);
         }
 
-        private void RunMenu()
+        /// <summary>
+        /// Reads user input and takes appropriate action.
+        /// </summary>
+        private void UserSelection()
         {
-            while (runProgramBool == true)
-            {
+            string userSelectionString = Console.ReadLine().Trim();
 
+            switch (userSelectionString)
+            {
+                case "1":
+                    break;
+                case "2":
+                    break;
+                case "3":
+                    break;
+                case "4":
+                    break;
+                case "5":
+                    runProgramBool = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid Selection. Please enter a number between 1 and 5.");
+                    break;
             }
         }
 
