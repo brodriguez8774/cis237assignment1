@@ -10,7 +10,14 @@ namespace assignment1
     {
         #region Variables
 
-        private bool runProgramBool = true;
+        // Classes
+        CSVProcessor processFiles;
+        WineItemCollection wineItemCollection;
+        WineItem wineItem;
+
+        // Working Variables
+        private bool runProgramBool;
+        private bool collectionCreatedBool;
 
         #endregion
 
@@ -20,7 +27,16 @@ namespace assignment1
 
         public UserInterface()
         {
-            
+            runProgramBool = true;
+            collectionCreatedBool = false;
+            RunMenu();
+        }
+
+        public UserInterface(bool runProgram)
+        {
+            RunProgram = runProgram;
+
+            RunMenu();
         }
 
         #endregion
@@ -29,6 +45,18 @@ namespace assignment1
 
         #region Properties
 
+        public bool RunProgram
+        {
+            set
+            {
+                this.runProgramBool = value;
+            }
+
+            get
+            {
+                return runProgramBool;
+            }
+        }
         #endregion
 
 
@@ -52,12 +80,14 @@ namespace assignment1
         /// </summary>
         private void DisplayMainMenu()
         {
-            Console.WriteLine("Choose an Option:" + Environment.NewLine +
-                "1) Load Wine List" + Environment.NewLine +
-                "2) Print Wine List" + Environment.NewLine +
-                "3) Search for Item" + Environment.NewLine +
-                "4) Add New Item to List" + Environment.NewLine +
-                "5) Exit" + Environment.NewLine);
+            Console.WriteLine(Environment.NewLine + Environment.NewLine +
+                "   Choose an Option:" + Environment.NewLine +
+                "   ~~~~~~~~~~~~~~~~~" + Environment.NewLine +
+                "    1) Load Wine List" + Environment.NewLine +
+                "    2) Print Wine List" + Environment.NewLine +
+                "    3) Search for Item" + Environment.NewLine +
+                "    4) Add New Item to List" + Environment.NewLine +
+                "    5) Exit" + Environment.NewLine);
         }
 
         /// <summary>
@@ -70,18 +100,55 @@ namespace assignment1
             switch (userSelectionString)
             {
                 case "1":
+                    processFiles = new CSVProcessor();
+                    int arraySizeInt = processFiles.WineListSize;
+                    wineItemCollection = new WineItemCollection(arraySizeInt);
+                    processFiles = new CSVProcessor();
+                    collectionCreatedBool = true;
                     break;
+
                 case "2":
+                    if (collectionCreatedBool)
+                    {
+                        wineItemCollection.GetCollectionToString();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Collection is currently empty.");
+                        collectionCreatedBool = true;
+                    }
                     break;
+
                 case "3":
+
                     break;
+
                 case "4":
+                    WineItem wineItem = new WineItem();
+
+                    try
+                    {
+                        Console.WriteLine(Environment.NewLine + "Enter Wine ID:");
+                        wineItem.WineID = Convert.ToInt32(Console.ReadLine().Trim());
+
+                        Console.WriteLine("Enter Wine Description:");
+                        wineItem.WineDescription = Console.ReadLine().Trim();
+
+                        Console.WriteLine("Enter Wine Pack Size:");
+                        wineItem.WineDescription = Console.ReadLine().Trim();
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid input. ID must be a number.");
+                    }
                     break;
+
                 case "5":
                     runProgramBool = false;
                     break;
+
                 default:
-                    Console.WriteLine("Invalid Selection. Please enter a number between 1 and 5.");
+                    Console.WriteLine(Environment.NewLine + " Error, Invalid Selection!" + Environment.NewLine + " Please enter a number between 1 and 5.");
                     break;
             }
         }

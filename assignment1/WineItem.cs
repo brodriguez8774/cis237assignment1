@@ -84,6 +84,17 @@ namespace assignment1
 
         #region Methods
 
+        /// <summary>
+        /// String Override to display WineItem information.
+        /// </summary>
+        /// <returns>Returns Item's ID, Description, and Pack size.</returns>
+        public override string ToString()
+        {
+            return this.wineIDInt + ", " +
+                this.wineDescriptionString + ", " +
+                this.wineSizeString + " ";
+        }
+
         #endregion
     }
 }

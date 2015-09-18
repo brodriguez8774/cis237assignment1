@@ -20,8 +20,8 @@ namespace assignment1
         private string wineSizeString;
 
         // Working Variables
-        private bool hasLoadedBool = false;
-        private int wineListSizeInt;
+        private static bool hasLoadedBool;
+        private static int wineListSizeInt;
         private int indexInt;
 
         private StreamReader inputFile;
@@ -33,11 +33,19 @@ namespace assignment1
         #region Constructors
 
         /// <summary>
-        /// Base Constructor.
+        /// Base Constructor. Determines initial size of Loaded File.
         /// </summary>
         public CSVProcessor()
         {
-            GetListSize();
+            if (hasLoadedBool == false)
+            {
+                GetListSize();
+                hasLoadedBool = true;
+            }
+            else
+            {
+                string errorDisplayString = "File already loaded.";
+            }
         }
 
         /// <summary>
@@ -47,6 +55,7 @@ namespace assignment1
         public CSVProcessor(WineItemCollection wineItemCollection)
         {
             Collection = wineItemCollection;
+            ReadFile();
         }
 
         #endregion
@@ -99,29 +108,50 @@ namespace assignment1
 
 
 
-        #region Methods
+        #region Private Methods
 
         /// <summary>
         /// Deterimines size of items to handle.
         /// </summary>
         private void GetListSize()
         {
+            OpenFile();
             while (inputFile.EndOfStream == false)
             {
+                inputFile.ReadLine();
                 wineListSizeInt++;
             }
+            CloseFile();
         }
+
+
+        private void OpenFile()
+        {
+            inputFile = File.OpenText("../../../datafiles/TestWineList.csv");
+        }
+
+        private void CloseFile()
+        {
+            inputFile.Close();
+        }
+
+        #endregion
+
+
+
+        #region Public Methods
 
         /// <summary>
         /// Reads from file to create WineItemCollection.
         /// </summary>
-        public void ReadFile()
+        private void ReadFile()
         {
             try
             {
                 indexInt = 0;
+                OpenFile();
 
-                while (indexInt > wineListSizeInt)
+                while (indexInt < wineListSizeInt)
                 {
                     string inputString = inputFile.ReadLine();
                     var flds = inputString.Split(',');
@@ -135,6 +165,7 @@ namespace assignment1
 
                     indexInt++;
                 }
+                CloseFile();
             }
             catch (Exception errmsg)
             {
