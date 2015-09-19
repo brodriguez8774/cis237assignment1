@@ -15,14 +15,8 @@ namespace assignment1
         WineItem wineItem;
         WineItemCollection wineItemCollection;
 
-        // Input Variables
-        private int wineIDInt;
-        private string wineDescriptionString;
-        private string wineSizeString;
-
         // Working Variables
-        private static bool hasLoadedBool;
-        private static int wineListSizeInt;
+        private static int loadListSizeInt;
         private int indexInt;
 
         private StreamReader inputFile;
@@ -45,6 +39,7 @@ namespace assignment1
         /// Constructor to read from file.
         /// </summary>
         /// <param name="wineItemCollection">The current instance of WineItemCollection Class.</param>
+        /// <param name="index">Index of first spot in array without a WineItem.</param>
         public CSVProcessor(WineItemCollection wineCollection, int index)
         {
             Collection = wineCollection;
@@ -75,35 +70,11 @@ namespace assignment1
             }
         }
 
-        public int WineListSize
+        public int LoadListSize
         {
             get
             {
-                return wineListSizeInt;
-            }
-        }
-
-        public int WineID
-        {
-            get
-            {
-                return wineIDInt;
-            }
-        }
-
-        public string WineDescription
-        {
-            get
-            {
-                return wineDescriptionString;
-            }
-        }
-
-        public string WineSize
-        {
-            get
-            {
-                return wineSizeString;
+                return loadListSizeInt;
             }
         }
 
@@ -111,7 +82,7 @@ namespace assignment1
 
 
 
-        #region Private Methods
+        #region Methods
 
         /// <summary>
         /// Deterimines size of items to handle.
@@ -122,14 +93,14 @@ namespace assignment1
             while (inputFile.EndOfStream == false)
             {
                 inputFile.ReadLine();
-                wineListSizeInt++;
+                loadListSizeInt++;
             }
             CloseFile();
             
-            // Forces wineList to at least be 10 items long.
-            if (wineListSizeInt < 10)
+            // Forces wineList to at least be 10 items long. For future-proofing.
+            if (loadListSizeInt < 10)
             {
-                wineListSizeInt = 10;
+                loadListSizeInt = 10;
             }
         }
 
@@ -158,7 +129,9 @@ namespace assignment1
             {
                 OpenFile();
 
-                while (indexInt < wineListSizeInt)
+                int arrayEndSizeInt = loadListSizeInt + wineItemCollection.WineListSize;
+
+                while (indexInt < arrayEndSizeInt)
                 {
                     string inputString = inputFile.ReadLine();
                     var flds = inputString.Split(',');
@@ -168,7 +141,7 @@ namespace assignment1
                     wineItem.WineDescription = flds[1].Trim();
                     wineItem.WineSize = flds[2].Trim();
 
-                    wineItemCollection.LoadWineItem(wineItem, indexInt);
+                    wineItemCollection.LoadWineItem(wineItem, indexInt, arrayEndSizeInt);
 
                     indexInt++;
                 }
@@ -183,11 +156,5 @@ namespace assignment1
 
         #endregion
 
-
-
-        #region Public Methods
-
-        
-        #endregion
     }
 }

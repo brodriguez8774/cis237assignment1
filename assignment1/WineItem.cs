@@ -21,11 +21,20 @@ namespace assignment1
 
         #region Constructors
 
+        /// <summary>
+        /// Base Constructor.
+        /// </summary>
         public WineItem()
         {
 
         }
 
+        /// <summary>
+        /// Constructor that fills in WineItem information.
+        /// </summary>
+        /// <param name="wineID">Item's desired ID.</param>
+        /// <param name="wineDescription">Item's desired Description.</param>
+        /// <param name="wineSize">Item's desired Pack Size.</param>
         public WineItem(int wineID, string wineDescription, string wineSize)
         {
             WineID = wineID;

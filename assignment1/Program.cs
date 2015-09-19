@@ -32,7 +32,7 @@ namespace assignment1
             //Initializes Classes and Variables
             runProgramBool = true;
             processFiles = new CSVProcessor();
-            loadListSizeInt = processFiles.WineListSize;
+            loadListSizeInt = processFiles.LoadListSize;
             wineItemCollection = new WineItemCollection(loadListSizeInt);
 
 

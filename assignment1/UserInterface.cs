@@ -35,12 +35,13 @@ namespace assignment1
             
         }
 
-        public UserInterface(bool runProgram)
-        {
-            RunProgram = runProgram;
-            RunMenu();
-        }
-
+        /// <summary>
+        /// Constructor to launch interface.
+        /// </summary>
+        /// <param name="runProgram">Continues running program if Boolean is true.</param>
+        /// <param name="loadListSize">The size of the list in loadFile.</param>
+        /// <param name="fileLoader">Class which loads files.</param>
+        /// <param name="collection">Collection of Wine Items.</param>
         public UserInterface(bool runProgram, int loadListSize, CSVProcessor fileLoader, WineItemCollection collection)
         {
             RunProgram = runProgram;
@@ -109,6 +110,7 @@ namespace assignment1
         /// </summary>
         private void RunMenu()
         {
+            wineItem = new WineItem();
             while (runProgramBool)
             {
                 DisplayMainMenu();
@@ -128,7 +130,8 @@ namespace assignment1
                 "    2) Print Wine List" + Environment.NewLine +
                 "    3) Search for Item" + Environment.NewLine +
                 "    4) Add New Item to List" + Environment.NewLine +
-                "    5) Exit" + Environment.NewLine);
+                "    5) Remove Item from List" + Environment.NewLine +
+                "    6) Exit" + Environment.NewLine);
         }
 
         /// <summary>
@@ -138,10 +141,12 @@ namespace assignment1
         {
             string userSelectionString = Console.ReadLine().Trim();
             Console.WriteLine();
+            WineItem wineItem = new WineItem();
+            int IDint;
 
             switch (userSelectionString)
             {
-                case "1":
+                case "1":   // Load Wine List.
                     // While has not been loaded yet.
                     if (collectionLoadedBool == false)
                     {
@@ -167,7 +172,7 @@ namespace assignment1
                     }
                     break;
                     
-                case "2":
+                case "2":   // Print Wine List.
                     if (wineItemCollection.WineItemArray[0] != null)
                     {
                         Console.WriteLine(wineItemCollection.GetCollectionToString());
@@ -178,16 +183,42 @@ namespace assignment1
                     }
                     break;
 
-                case "3":
+                case "3":   // Search Wine List.
+                    // Determines if there is a list to even search.
+                    if (wineItemCollection.WineItemArray[0] != null)
+                    {
+                        try
+                        {
+                            Console.WriteLine("Enter ID to search for: ");
+                            IDint = Convert.ToInt32(Console.ReadLine().Trim());
 
+                            wineItem = wineItemCollection.SearchWineItem(IDint, 0);
+                            if (wineItem.WineDescription == "ID is Not Found")
+                            {
+                                Console.WriteLine("The entered ID (" + wineItem.WineID + ") is not found.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Match Found: " + wineItem.ToString());
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Error, invalid ID. Please enter a 5 digit number.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no items to search. Please load a file or add items first.");
+                    }
+
+                    
                     break;
 
-                case "4":
-                    WineItem wineItem = new WineItem();
-
+                case "4":   // Add item to Wine List.
                     try
                     {
-                        Console.WriteLine(Environment.NewLine + "Enter Wine ID:");
+                        Console.WriteLine(Environment.NewLine + "Enter Wine ID:  (ID should be a 5 digit number)");
                         wineItem.WineID = Convert.ToInt32(Console.ReadLine().Trim());
 
                         Console.WriteLine("Enter Wine Description:");
@@ -205,7 +236,22 @@ namespace assignment1
                     
                     break;
 
-                case "5":
+                case "5":   // Remove item from Wine List.
+                    Console.WriteLine(Environment.NewLine + "Enter ID to remove: ");
+                    IDint = Convert.ToInt32(Console.ReadLine());
+                    if (wineItemCollection.RemoveWineItem(IDint, 0))
+                    {
+                        Console.WriteLine("ID " + IDint + " successfully removed.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not locate ID to remove.");
+                    }
+
+
+                    break;
+
+                case "6":   // Exit.
                     runProgramBool = false;
                     break;
 
