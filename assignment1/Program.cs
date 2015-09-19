@@ -14,7 +14,37 @@ namespace assignment1
         /// <param name="args">Command-Line args</param>
         static void Main(string[] args)
         {
-            UserInterface mainMenu = new UserInterface();
+            #region Variables
+
+            // Classes
+            UserInterface mainMenu;
+            CSVProcessor processFiles;
+            WineItemCollection wineItemCollection;
+
+            // Input Variables
+            int loadListSizeInt;                    // Number of items in file to load.
+
+            // Working Variables
+            bool runProgramBool;                    // Is true until user selects exit. Forces loop to keep program running.
+
+            #endregion
+
+            //Initializes Classes and Variables
+            runProgramBool = true;
+            processFiles = new CSVProcessor();
+            loadListSizeInt = processFiles.WineListSize;
+            wineItemCollection = new WineItemCollection(loadListSizeInt);
+
+
+
+            mainMenu = new UserInterface(runProgramBool, loadListSizeInt, processFiles, wineItemCollection);
+
+            #region Methods
+
+            #endregion
+
+
+            
 
 
             #region TestRegion

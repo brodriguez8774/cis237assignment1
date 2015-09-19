@@ -14,10 +14,12 @@ namespace assignment1
         WineItem wineItem;
 
         // Input Variables
-        private int lengthOfArrayInt;
+        private int wineListSizeInt;
+        private int lenghtOfArrayInt;
         private int indexInt;
 
         private WineItem[] wineItemArray;
+        private WineItem[] tempArray;
 
         #endregion
 
@@ -30,17 +32,19 @@ namespace assignment1
         /// </summary>
         public WineItemCollection()
         {
-
+            
         }
 
         /// <summary>
-        /// Create Array Constructor.
+        /// Create Array Constructor with room for additional items.
         /// </summary>
         /// <param name="wineListSize">Size of wine List.</param>
         public WineItemCollection(int wineListSize)
         {
-            lengthOfArrayInt = wineListSize;
-            wineItemArray = new WineItem[lengthOfArrayInt+(lengthOfArrayInt/2)];
+            WineListSize = wineListSize;
+
+            lenghtOfArrayInt = wineListSizeInt + (wineListSizeInt / 2);
+            wineItemArray = new WineItem[lenghtOfArrayInt];
         }
 
         #endregion
@@ -49,15 +53,63 @@ namespace assignment1
 
         #region Properties
 
+        public int WineListSize
+        {
+            set
+            {
+                wineListSizeInt = value;
+            }
+            get
+            {
+                return wineListSizeInt;
+            }
+        }
+
+        public WineItem[] WineItemArray
+        {
+            get
+            {
+                return wineItemArray;
+            }
+        }
+
+        public int CurrentIndex
+        {
+            get
+            {
+                return indexInt;
+            }
+        }
+
+        public int ArrayLength
+        {
+            get
+            {
+                return lenghtOfArrayInt;
+            }
+        }
+
         #endregion
 
 
 
         #region Private Methods
 
+        /// <summary>
+        /// Expands Collection if user fills up entire array. Generally only happens if manually creating a new list.
+        /// </summary>
         private void ExpandArraySize()
         {
+            lenghtOfArrayInt = wineListSizeInt + (wineListSizeInt / 2);
+            tempArray = new WineItem[lenghtOfArrayInt];
 
+            indexInt = 0;
+            while (indexInt < wineListSizeInt)
+            {
+                tempArray[indexInt] = WineItemArray[indexInt];
+                indexInt++;
+            }
+            wineItemArray = tempArray;
         }
 
         #endregion
@@ -99,16 +151,30 @@ namespace assignment1
             return outputString;
         }
 
+        /// <summary>
+        /// Adds new WineItem to first availible spot in collection.
+        /// </summary>
+        /// <param name="wineItem"></param>
         public void AddWineItem(WineItem wineItem)
         {
-            if (lengthOfArrayInt < wineItemArray.Length)
+            // Recursive if to account for no previous loaded list.
+            if (wineListSizeInt < lenghtOfArrayInt)
             {
-                wineItemArray[lengthOfArrayInt] = wineItem;
-                lengthOfArrayInt++;
+                if (wineItemArray[indexInt] == null)
+                {
+                    wineItemArray[indexInt] = wineItem;
+                    wineListSizeInt++;
+                    indexInt++;
+                }
+                else
+                {
+                    indexInt++;
+                    AddWineItem(wineItem);
+                }
             }
             else
             {
-
+                ExpandArraySize();
             }
         }
 

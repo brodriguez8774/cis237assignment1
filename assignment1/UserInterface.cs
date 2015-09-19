@@ -11,13 +11,15 @@ namespace assignment1
         #region Variables
 
         // Classes
-        CSVProcessor processFiles;
-        WineItemCollection wineItemCollection;
         WineItem wineItem;
+        WineItemCollection wineItemCollection;
+        CSVProcessor processFiles;
 
         // Working Variables
-        private bool runProgramBool;
-        private bool collectionCreatedBool;
+        private bool runProgramBool;                    // Keeps program running.
+        private bool collectionLoadedBool;              // Saves if file has been loaded or not.
+        private int loadListSizeInt;
+        private int indexInt;
 
         #endregion
 
@@ -25,17 +27,28 @@ namespace assignment1
 
         #region Constructors
 
+        /// <summary>
+        /// Base Constructor
+        /// </summary>
         public UserInterface()
         {
-            runProgramBool = true;
-            collectionCreatedBool = false;
-            RunMenu();
+            
         }
 
         public UserInterface(bool runProgram)
         {
             RunProgram = runProgram;
+            RunMenu();
+        }
 
+        public UserInterface(bool runProgram, int loadListSize, CSVProcessor fileLoader, WineItemCollection collection)
+        {
+            RunProgram = runProgram;
+            LoadListSize = loadListSize;
+            FileLoader = fileLoader;
+            Collection = collection;
+
+            RunProgram = runProgram;
             RunMenu();
         }
 
@@ -51,12 +64,40 @@ namespace assignment1
             {
                 this.runProgramBool = value;
             }
-
             get
             {
                 return runProgramBool;
             }
         }
+
+        public int LoadListSize
+        {
+            set
+            {
+                this.loadListSizeInt = value;
+            }
+            get
+            {
+                return loadListSizeInt;
+            }
+        }
+
+        private CSVProcessor FileLoader
+        {
+            set
+            {
+                this.processFiles = value;
+            }
+        }
+
+        private WineItemCollection Collection
+        {
+            set
+            {
+                this.wineItemCollection = value;
+            }
+        }
+
         #endregion
 
 
@@ -96,26 +137,44 @@ namespace assignment1
         private void UserSelection()
         {
             string userSelectionString = Console.ReadLine().Trim();
+            Console.WriteLine();
 
             switch (userSelectionString)
             {
                 case "1":
-                    processFiles = new CSVProcessor();
-                    int arraySizeInt = processFiles.WineListSize;
-                    wineItemCollection = new WineItemCollection(arraySizeInt);
-                    processFiles = new CSVProcessor();
-                    collectionCreatedBool = true;
-                    break;
-
-                case "2":
-                    if (collectionCreatedBool)
+                    // While has not been loaded yet.
+                    if (collectionLoadedBool == false)
                     {
-                        wineItemCollection.GetCollectionToString();
+                        indexInt = wineItemCollection.CurrentIndex;
+                        // If no items are present in the collection.
+                        if (wineItemCollection.WineItemArray[0] == null)
+                        {
+                            processFiles = new CSVProcessor(wineItemCollection, indexInt);
+                        }
+                        else
+                        {
+                            while (wineItemCollection.WineItemArray[indexInt] != null)
+                            {
+                                indexInt++;
+                            }
+                            processFiles= new CSVProcessor(wineItemCollection, indexInt);
+                        }
+                        collectionLoadedBool = true;
                     }
                     else
                     {
-                        Console.WriteLine("Collection is currently empty.");
-                        collectionCreatedBool = true;
+                        Console.WriteLine("Wine list has already been loaded.");
+                    }
+                    break;
+                    
+                case "2":
+                    if (wineItemCollection.WineItemArray[0] != null)
+                    {
+                        Console.WriteLine(wineItemCollection.GetCollectionToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("List is currently empty.");
                     }
                     break;
 
@@ -135,12 +194,15 @@ namespace assignment1
                         wineItem.WineDescription = Console.ReadLine().Trim();
 
                         Console.WriteLine("Enter Wine Pack Size:");
-                        wineItem.WineDescription = Console.ReadLine().Trim();
+                        wineItem.WineSize = Console.ReadLine().Trim();
                     }
                     catch
                     {
                         Console.WriteLine("Invalid input. ID must be a number.");
                     }
+
+                    wineItemCollection.AddWineItem(wineItem);
+                    
                     break;
 
                 case "5":

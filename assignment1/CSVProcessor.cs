@@ -12,7 +12,8 @@ namespace assignment1
         #region Variables
 
         // Classes
-        private WineItemCollection wineItemCollection;
+        WineItem wineItem;
+        WineItemCollection wineItemCollection;
 
         // Input Variables
         private int wineIDInt;
@@ -33,28 +34,22 @@ namespace assignment1
         #region Constructors
 
         /// <summary>
-        /// Base Constructor. Determines initial size of Loaded File.
+        /// Base Constructor. Determines initial size of Loaded File. Needs to run prior to WineItemCollection creation.
         /// </summary>
         public CSVProcessor()
         {
-            if (hasLoadedBool == false)
-            {
-                GetListSize();
-                hasLoadedBool = true;
-            }
-            else
-            {
-                string errorDisplayString = "File already loaded.";
-            }
+            GetListSize();
         }
 
         /// <summary>
         /// Constructor to read from file.
         /// </summary>
         /// <param name="wineItemCollection">The current instance of WineItemCollection Class.</param>
-        public CSVProcessor(WineItemCollection wineItemCollection)
+        public CSVProcessor(WineItemCollection wineCollection, int index)
         {
-            Collection = wineItemCollection;
+            Collection = wineCollection;
+            Index = index;
+
             ReadFile();
         }
 
@@ -69,6 +64,14 @@ namespace assignment1
             set
             {
                 this.wineItemCollection = value;
+            }
+        }
+
+        public int Index
+        {
+            set
+            {
+                this.indexInt = value;
             }
         }
 
@@ -122,24 +125,29 @@ namespace assignment1
                 wineListSizeInt++;
             }
             CloseFile();
+            
+            // Forces wineList to at least be 10 items long.
+            if (wineListSizeInt < 10)
+            {
+                wineListSizeInt = 10;
+            }
         }
 
-
+        /// <summary>
+        /// Opens file and sets to inputfile.
+        /// </summary>
         private void OpenFile()
         {
             inputFile = File.OpenText("../../../datafiles/TestWineList.csv");
         }
 
+        /// <summary>
+        /// Closes inputFile.
+        /// </summary>
         private void CloseFile()
         {
             inputFile.Close();
         }
-
-        #endregion
-
-
-
-        #region Public Methods
 
         /// <summary>
         /// Reads from file to create WineItemCollection.
@@ -148,7 +156,6 @@ namespace assignment1
         {
             try
             {
-                indexInt = 0;
                 OpenFile();
 
                 while (indexInt < wineListSizeInt)
@@ -156,7 +163,7 @@ namespace assignment1
                     string inputString = inputFile.ReadLine();
                     var flds = inputString.Split(',');
 
-                    WineItem wineItem = new WineItem();
+                    wineItem = new WineItem();
                     wineItem.WineID = Convert.ToInt32(flds[0].Trim());
                     wineItem.WineDescription = flds[1].Trim();
                     wineItem.WineSize = flds[2].Trim();
@@ -173,6 +180,14 @@ namespace assignment1
             }
         }
 
+
+        #endregion
+
+
+
+        #region Public Methods
+
+        
         #endregion
     }
 }
