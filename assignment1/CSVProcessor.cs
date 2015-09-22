@@ -7,6 +7,9 @@ using System.IO;
 
 namespace assignment1
 {
+    /// <summary>
+    /// Handles loading/reading of file.
+    /// </summary>
     class CSVProcessor
     {
         #region Variables
@@ -109,7 +112,7 @@ namespace assignment1
         /// </summary>
         private void OpenFile()
         {
-            inputFile = File.OpenText("../../../datafiles/TestWineList.csv");
+            inputFile = File.OpenText("../../../datafiles/WineList.csv");
         }
 
         /// <summary>
@@ -137,7 +140,7 @@ namespace assignment1
                     var flds = inputString.Split(',');
 
                     wineItem = new WineItem();
-                    wineItem.WineID = Convert.ToInt32(flds[0].Trim());
+                    wineItem.WineID = flds[0].Trim();
                     wineItem.WineDescription = flds[1].Trim();
                     wineItem.WineSize = flds[2].Trim();
 

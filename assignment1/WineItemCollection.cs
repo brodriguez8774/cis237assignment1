@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace assignment1
 {
+    /// <summary>
+    /// Stores and handles full collection of Wine Items.
+    /// </summary>
     class WineItemCollection
     {
         #region Variables
@@ -134,7 +137,7 @@ namespace assignment1
         /// Loads Wine Items from file into Colletion Array.
         /// </summary>
         /// <param name="wineItem">The individual WineItem to add.</param>
-        /// <param name="indexInt">Index the item will be added to.</param>
+        /// <param name="index">Index the item will be added to.</param>
         /// <param name="arrayEndSize">Total number of non-null items array will have.</param>
         public void LoadWineItem(WineItem wineItem, int index, int arrayEndSize)
         {
@@ -165,7 +168,7 @@ namespace assignment1
                 if (wineItem != null)
                 {
                     indexInt++;
-                    outputString += " " + (indexInt + ")").PadRight(5) + wineItem.ToString() + Environment.NewLine;
+                    outputString += " " + (indexInt + ")").PadRight(6) + wineItem.ToString() + Environment.NewLine;
                 }
             }
             return outputString;
@@ -206,7 +209,7 @@ namespace assignment1
         /// <param name="wineID">ID to search for.</param>
         /// <param name="index">Current index of search.</param>
         /// <returns>Full information of matching item.</returns>
-        public WineItem SearchWineItem(int wineID, int index)
+        public WineItem SearchWineItem(string wineID, int index)
         {
             // Checks for end of array items.
             if (index < wineListSizeInt)
@@ -231,7 +234,13 @@ namespace assignment1
             return wineItem;
         }
 
-        public bool RemoveWineItem(int wineID, int index)
+        /// <summary>
+        /// Search for and removal of matching Wine ID.
+        /// </summary>
+        /// <param name="wineID">ID to search for.</param>
+        /// <param name="index">Current index of search.</param>
+        /// <returns>Information regarding item removal.</returns>
+        public bool RemoveWineItem(string wineID, int index)
         {
             bool removedIDBool = false;
             

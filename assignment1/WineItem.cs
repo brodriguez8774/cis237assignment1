@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace assignment1
 {
+    /// <summary>
+    /// Creates and holds information for individual Wine Items.
+    /// </summary>
     class WineItem
     {
         #region Variables
 
         // Input Variables
-        private int wineIDInt;
+        private string wineIDInt;
         private string wineDescriptionString;
         private string wineSizeString;
 
@@ -35,7 +38,7 @@ namespace assignment1
         /// <param name="wineID">Item's desired ID.</param>
         /// <param name="wineDescription">Item's desired Description.</param>
         /// <param name="wineSize">Item's desired Pack Size.</param>
-        public WineItem(int wineID, string wineDescription, string wineSize)
+        public WineItem(string wineID, string wineDescription, string wineSize)
         {
             WineID = wineID;
             WineDescription = wineDescription;
@@ -48,7 +51,7 @@ namespace assignment1
 
         #region Properties
 
-        public int WineID
+        public string WineID
         {
             set
             {
