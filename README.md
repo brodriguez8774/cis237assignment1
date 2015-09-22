@@ -51,6 +51,9 @@ Suggestion/Hints:
 * Remember to handle (gracefully) cases where the user enters something incorrectly.
 
 ## Outside Resources Used
+http://stackoverflow.com/questions/7065928/console-writeline-not-working-properly
+* Realized that you can't use Console.WriteLine() unless inside a method. Derp.
+
 
 ## Known Problems, Issues, And/Or Errors in the Program
 
